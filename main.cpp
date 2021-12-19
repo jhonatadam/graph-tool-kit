@@ -11,7 +11,12 @@ int main()
     g.add_edge(3, 4, 3);
     g.add_edge(4, 5, 4);
     g.add_edge(5, 1, 5);
-    g.add_vertex(10);
+    g.add_vertex(10, 100);
+    g.vertex_data(1) = 4;
+
+    cout << g.vertex_data(1) << " " << g.vertex_data(10) << endl;
+
+
 
     auto [distance, predecessor] = gtk::bellman_ford(g, 1);
 

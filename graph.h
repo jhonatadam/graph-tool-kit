@@ -47,12 +47,23 @@ public:
     }
 
     ///
-    /// \brief addVertex adds a vertex u to the graph.
+    /// \brief add_vertex adds a vertex u to the graph.
     /// \param u vertex to be added.
     ///
-    void add_vertex(const vertex_type &u)
+    void add_vertex(const vertex_type& u)
     {
         adjacency_map[u];
+    }
+
+    ///
+    /// \brief add_vertex adds vertex u to the graph.
+    /// \param u vertex to be added.
+    /// \param data vertex u data.
+    ///
+    void add_vertex(const vertex_type& u, const edge_data_type& data)
+    {
+        adjacency_map[u];
+        vertex_data_map[u] = data;
     }
 
     ///
@@ -118,10 +129,35 @@ public:
         return u_it != adjacency_map.end() && u_it->second.find(v) != u_it->second.end();
     }
 
+
+    ///
+    /// \brief vertex_data provides access to the non-constant reference of u data.
+    /// \param u vertex u.
+    /// \return reference to u data.
+    ///
+    vertex_data_type & vertex_data(const vertex_type& u)
+    {
+        return vertex_data_map[u];
+    }
+
+    ///
+    /// \brief vertex_data provides access to the constant reference of u data.
+    /// \param u vertex u
+    /// \return constant reference to u data.
+    ///
+    const vertex_data_type& vertex_data(const vertex_data_type& u) const
+    {
+        auto u_it = vertex_data_map.find(u);
+        if (u_it != vertex_data_map.end())
+            return u_it->second;
+        else
+            throw "Vertex u is not in the graph.";
+    }
+
     ///
     /// \brief edge_data provides access to the non-constant reference of edge (u, v) data.
-    /// \param u
-    /// \param v
+    /// \param u end point u.
+    /// \param v end point v.
     /// \return reference to (u, v) data.
     ///
     edge_data_type & edge_data(const vertex_type& u, const vertex_type& v)
@@ -131,8 +167,8 @@ public:
 
     ///
     /// \brief edge_data provides access to the constant reference of edge (u, v) data.
-    /// \param u
-    /// \param v
+    /// \param u end point u.
+    /// \param v end point v.
     /// \return constant reference to (u, v) data.
     ///
     const edge_data_type & edge_data(const vertex_type& u, const vertex_type& v) const
