@@ -6,15 +6,16 @@
 #include <limits>
 #include <iostream>
 namespace gtk {
-template <class weight>
+template <class weight, class vertex>
 using distance_map = std::unordered_map<vertex, weight>;
+template <class vertex>
 using predecessor_map = std::unordered_map<vertex, vertex>;
 
-template <class weight>
-std::pair<distance_map<weight>*, predecessor_map*> initialize_single_source(
-        const graph & g, const vertex & s) {
-    distance_map<weight> * distance = new distance_map<weight>;
-    predecessor_map * predecessor = new predecessor_map;
+template <class weight, class vertex_data, class vertex>
+std::pair<distance_map<weight, vertex>*, predecessor_map<vertex>*> initialize_single_source(
+        const graph<weight, vertex_data, vertex>& g, const vertex& s) {
+    distance_map<weight, vertex> * distance = new distance_map<weight, vertex>;
+    predecessor_map<vertex> * predecessor = new predecessor_map<vertex>;
 
     for (const vertex & v : g.vertices())
         (*distance)[v] = std::numeric_limits<weight>::max();
@@ -23,29 +24,24 @@ std::pair<distance_map<weight>*, predecessor_map*> initialize_single_source(
     return {distance, predecessor};
 }
 
-template  <class weight>
-void relax(const vertex & u, const vertex & v, distance_map<weight> * distance,
-           predecessor_map * predecessor, const gtk::edge_function<weight> & w) {
+template <class weight, class vertex_data, class vertex>
+void relax(const graph<weight, vertex_data, vertex>& g, const vertex& u, const vertex& v,
+           distance_map<weight, vertex> * distance, predecessor_map<vertex> * predecessor) {
     // TODO quando soma vai para negativo
-    if (distance->at(v) - w(u, v) > distance->at(u)) {
-        distance->at(v) = distance->at(u) + w(u, v);
+    if (distance->at(v) - g.edge_data(u, v) > distance->at(u)) {
+        distance->at(v) = distance->at(u) + g.edge_data(u, v);
         (*predecessor)[v] = u;
     }
 }
 
-template <class weight>
-std::pair<distance_map<weight>*, predecessor_map*> bellman_ford(
-        const graph &g, const vertex& s, const gtk::edge_function<weight> & w) {
+template <class weight, class vertex_data, class vertex>
+std::pair<distance_map<weight, vertex>*, predecessor_map<vertex>*> bellman_ford(const graph<weight, vertex_data, vertex>& g, const vertex& s) {
     auto [distance, predecessor] = initialize_single_source<weight>(g, s);
-    for (size i = 1; i < g.number_of_vertices(); i++) {
+    for (size i = 1; i < g.number_of_vertices(); i++)
         for (const auto & [u, v] : g.edges())
-            relax(u, v, distance, predecessor, w);
-//        for (auto [v, d] : *distance)
-//            std::cout << v << ": " << d << ", ";
-//        std::cout << i << std::endl;
-    }
+            relax(g, u, v, distance, predecessor);
     for (const auto & [u, v] : g.edges()) {
-        if (distance->at(v) - w(u, v)> distance->at(u) ) {
+        if (distance->at(v) - g.edge_data(u, v)> distance->at(u) ) {
             delete distance;
             delete predecessor;
             return {nullptr, nullptr};
@@ -55,11 +51,11 @@ std::pair<distance_map<weight>*, predecessor_map*> bellman_ford(
 }
 
 
-template <class weight>
-std::pair<distance_map<weight>*, predecessor_map*> dijkstra(
-        const graph &g, const vertex& s, const gtk::edge_function<weight> & w) {
+//template <class weight>
+//std::pair<distance_map<weight>*, predecessor_map*> dijkstra(
+//        const graph &g, const vertex& s, const gtk::edge_function<weight> & w) {
 
-}
+//}
 
 }
 

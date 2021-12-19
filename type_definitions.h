@@ -7,6 +7,7 @@
 #include <boost/functional/hash.hpp>
 
 namespace gtk {
+    // TODO if vertex is a template parameter of graph, then these definitions must be defines inside graph definition.
     using size = unsigned long;
     using vertex = size;
     struct edge{vertex u; vertex v;};
