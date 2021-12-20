@@ -37,7 +37,7 @@ void relax(const graph<weight, vertex_data, vertex>& g, const vertex& u, const v
 template <class weight, class vertex_data, class vertex>
 std::pair<distance_map<weight, vertex>*, predecessor_map<vertex>*> bellman_ford(const graph<weight, vertex_data, vertex>& g, const vertex& s) {
     auto [distance, predecessor] = initialize_single_source<weight>(g, s);
-    for (size i = 1; i < g.number_of_vertices(); i++)
+    for (unsigned long i = 1; i < g.number_of_vertices(); i++)
         for (const auto & [u, v] : g.edges())
             relax(g, u, v, distance, predecessor);
     for (const auto & [u, v] : g.edges()) {
