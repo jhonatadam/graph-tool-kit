@@ -1,6 +1,8 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include <unordered_map>
+#include <unordered_set>
 #include <boost/functional/hash.hpp>
 #include "type_definitions.h"
 
@@ -10,6 +12,7 @@ namespace gtk {
 template <class edge_data_type = double,
           class vertex_data_type = double,
           class vertex_type = int>
+
 class graph {
     using vertex_set = std::unordered_set<vertex_type>;
     using vertex_pair = std::pair<vertex_type, vertex_type>;
@@ -23,7 +26,7 @@ class graph {
     ///
     /// \brief _number_of_edges keeps the number of edges in the graph.
     ///
-    size _number_of_edges;
+    size_t _number_of_edges;
 
     ///
     /// \brief vertex_data_map maps vertices to their respective data.
@@ -231,7 +234,7 @@ public:
     /// \param u vertex the degree is accessed.
     /// \return the degree of vertex u.
     ///
-    size degree(const vertex_type& u) const
+    size_t degree(const vertex_type& u) const
     {
         auto u_it = adjacency_map.find(u);
         if (u_it != adjacency_map.end())
@@ -244,7 +247,7 @@ public:
     /// \brief number_of_vertices accesses the number of vertices.
     /// \return the number of vertices in the graph.
     ///
-    size number_of_vertices() const
+    size_t number_of_vertices() const
     {
         return adjacency_map.size();
     }
@@ -253,7 +256,7 @@ public:
     /// \brief number_of_edges accesses the number of edges.
     /// \return the number of edges in the graph.
     ///
-    size number_of_edges() const
+    size_t number_of_edges() const
     {
         return _number_of_edges;
     }

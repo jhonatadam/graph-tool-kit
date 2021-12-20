@@ -1,14 +1,12 @@
 TEMPLATE = app
-CONFIG += console c++11
+CONFIG += console c++2x
 CONFIG -= app_bundle
 CONFIG -= qt
 
 LIBS += -lboost_fiber -lboost_context
 
 SOURCES += \
-        digraph.cpp \
-        main.cpp \
-        shortest_path.cpp
+        main.cpp
 
 HEADERS += \
     digraph.h \
