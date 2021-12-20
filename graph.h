@@ -12,7 +12,6 @@ namespace gtk {
 template <class edge_data_type = double,
           class vertex_data_type = double,
           class vertex_type = int>
-
 class graph {
     using vertex_set = std::unordered_set<vertex_type>;
     using vertex_pair = std::pair<vertex_type, vertex_type>;
